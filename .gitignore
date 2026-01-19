@@ -1,3 +1,4 @@
 *.pkl
 population_synthesis/
 analysis/software/
+WR_population.code-workspace
