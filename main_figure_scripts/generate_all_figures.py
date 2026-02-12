@@ -17,7 +17,7 @@ from tqdm import tqdm
 from scipy.stats import gaussian_kde
 
 # Custom helper scripts
-from helper_functions import calc_Teff, tout_L_ZAMS, tout_R_ZAMS
+from helper_functions import calc_Teff, tout_L_ZAMS, tout_R_ZAMS, classify_WR_type
 
 
 def load_WR_data(metallicity):
@@ -63,10 +63,9 @@ def process_WR_data(S1_WR_data, S2_WR_data):
         Teff = 10**calc_Teff(data['S1_log_L'], data['S1_log_R'])
         
         # WR classification
-        WN_mask = (surface_H <= 0.4) & (optical_depth >= 1.5)
-        WC_mask = (surface_H <= 0.4) & (surface_He < 0.7) & (optical_depth >= 1.5)
+        WN_mask, WC_mask, wr_types = classify_WR_type(surface_H, surface_He, optical_depth)
         
-        WR_types.extend(np.where(WC_mask, 'WC', np.where(WN_mask, 'WN', 'stripped-He')))
+        WR_types.extend(wr_types)
         time_array.extend(data['time'].values)
         weight_array.extend(weights)
         state_array.extend(data['state'].values)
@@ -99,10 +98,9 @@ def process_WR_data(S1_WR_data, S2_WR_data):
         Teff = 10**calc_Teff(data['S2_log_L'], data['S2_log_R'])
         
         # WR classification
-        WN_mask = (surface_H <= 0.4) & (optical_depth >= 1.5)
-        WC_mask = (surface_H <= 0.4) & (surface_He < 0.7) & (optical_depth >= 1.5)
+        WN_mask, WC_mask, wr_types = classify_WR_type(surface_H, surface_He, optical_depth)
         
-        WR_types.extend(np.where(WC_mask, 'WC', np.where(WN_mask, 'WN', 'stripped-He')))
+        WR_types.extend(wr_types)
         time_array.extend(data['time'].values)
         weight_array.extend(weights)
         state_array.extend(data['state'].values)

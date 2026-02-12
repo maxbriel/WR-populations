@@ -13,7 +13,7 @@ from pathlib import Path
 from tqdm import tqdm
 
 # Custom helper scripts
-from helper_functions import calc_Teff
+from helper_functions import calc_Teff, classify_WR_type
 
 
 def load_all_metallicities():
@@ -54,10 +54,9 @@ def compute_binary_fractions(S1_WR_data, S2_WR_data):
         surface_He = data['S1_surface_he4']
         
         # WR classification
-        WN_mask = (surface_H <= 0.4) & (optical_depth >= 1.5)
-        WC_mask = (surface_H <= 0.4) & (surface_He < 0.7) & (optical_depth >= 1.5)
+        WN_mask, WC_mask, wr_types = classify_WR_type(surface_H, surface_He, optical_depth)
         
-        WR_types.extend(np.where(WC_mask, 'WC', np.where(WN_mask, 'WN', 'stripped-He')))
+        WR_types.extend(wr_types)
         weight_array.extend(weights)
         state_array.extend(data['state'].values)
     
@@ -71,10 +70,9 @@ def compute_binary_fractions(S1_WR_data, S2_WR_data):
         surface_He = data['S2_surface_he4']
         
         # WR classification
-        WN_mask = (surface_H <= 0.4) & (optical_depth >= 1.5)
-        WC_mask = (surface_H <= 0.4) & (surface_He < 0.7) & (optical_depth >= 1.5)
+        WN_mask, WC_mask, wr_types = classify_WR_type(surface_H, surface_He, optical_depth)
         
-        WR_types.extend(np.where(WC_mask, 'WC', np.where(WN_mask, 'WN', 'stripped-He')))
+        WR_types.extend(wr_types)
         weight_array.extend(weights)
         state_array.extend(data['state'].values)
     
@@ -201,10 +199,9 @@ def plot_HR_diagrams_comparison(all_data, output_dir):
             surface_He = data_s1['S1_surface_he4']
             Teff = 10**calc_Teff(data_s1['S1_log_L'], data_s1['S1_log_R'])
             
-            WN_mask = (surface_H <= 0.4) & (optical_depth >= 1.5)
-            WC_mask = (surface_H <= 0.4) & (surface_He < 0.7) & (optical_depth >= 1.5)
+            WN_mask, WC_mask, wr_types = classify_WR_type(surface_H, surface_He, optical_depth)
             
-            WR_types.extend(np.where(WC_mask, 'WC', np.where(WN_mask, 'WN', 'stripped-He')))
+            WR_types.extend(wr_types)
             Teff_array.extend(Teff)
             L_array.extend(10**data_s1['S1_log_L'].values)
             weight_array.extend(weights)
@@ -218,10 +215,9 @@ def plot_HR_diagrams_comparison(all_data, output_dir):
             surface_He = data_s2['S2_surface_he4']
             Teff = 10**calc_Teff(data_s2['S2_log_L'], data_s2['S2_log_R'])
             
-            WN_mask = (surface_H <= 0.4) & (optical_depth >= 1.5)
-            WC_mask = (surface_H <= 0.4) & (surface_He < 0.7) & (optical_depth >= 1.5)
+            WN_mask, WC_mask, wr_types = classify_WR_type(surface_H, surface_He, optical_depth)
             
-            WR_types.extend(np.where(WC_mask, 'WC', np.where(WN_mask, 'WN', 'stripped-He')))
+            WR_types.extend(wr_types)
             Teff_array.extend(Teff)
             L_array.extend(10**data_s2['S2_log_L'].values)
             weight_array.extend(weights)
