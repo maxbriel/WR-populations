@@ -1,0 +1,20 @@
+WR Population Statistics - Z = 1e+00 Zsun
+============================================================
+
+Binary Fractions:
+  WR binary fraction: 0.7439
+  WN binary fraction: 0.7844
+  WC binary fraction: 0.6713
+  WC/WN ratio: 0.4778
+
+Companion Fractions (for binaries only):
+  BH: 0.1776
+  NS: 0.0002
+  WD: 0.0000
+  Stripped: 0.0661
+  MS: 0.7308
+  HG: 0.0118
+  Giants: 0.0131
+  Total (check): 0.9997
+unique companion types considered above.
+['BH', 'H-rich_Core_C_depleted', 'H-rich_Core_H_burning', 'H-rich_Core_He_burning', 'H-rich_Core_He_depleted', 'H-rich_Shell_H_burning', 'H-rich_non_burning', 'NS', 'accreted_He_Core_H_burning', 'stripped_He_Core_C_depleted', 'stripped_He_Core_He_burning', 'stripped_He_Core_He_depleted', 'stripped_He_non_burning']
