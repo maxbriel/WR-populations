@@ -1,5 +1,5 @@
 *.pkl
-population_synthesis/
+population_synthesis/runs
 analysis/software/
 WR_population.code-workspace
-*/__pycache__/
+*/__pycache__/*
