@@ -14,12 +14,12 @@ from posydon.popsyn.synthetic_population import TransientPopulation
 import pickle
 from optical_depth import optical_depth_calculation
 
-data_folder = Path('/Users/max/Documents/projects/WR_population/population_synthesis/runs/2025_11_04/')
+data_folder = Path('/Users/max/Documents/projects/WR_population/population_synthesis/runs/2026_08_14/')
 
-output_folder = Path('/Users/max/Documents/projects/WR_population/data/optical_depth_test/')
+output_folder = Path('/Users/max/Documents/projects/WR_population/data/optical_depth/')
 
 # metallicities to process
-metallicities = [0.2, 0.45]
+metallicities = [0.01, 0.1, 0.2, 0.45, 1]
 
 def get_WR_phases(history, model_weights, metallicity):
     '''Get the WR phases for both stars in the binary history.'''

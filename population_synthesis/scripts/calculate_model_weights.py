@@ -15,7 +15,7 @@ def trans_func(hist_chunk, oneline_chunk, form_chunk):
 
 
 metallicities = [0.01, 0.1, 0.2, 0.45, 1]
-data_folder = Path('/Users/max/Documents/projects/WR_population/population_synthesis/runs/2025_11_04/')
+data_folder = Path('/Users/max/Documents/projects/WR_population/population_synthesis/runs/2026_08_14/')
 
 
 for metallicity in metallicities:
