@@ -58,7 +58,7 @@ All notebooks use the `wr_population` kernel and import from the `wr_population`
 | `observed_period_distributions`                                                      | `observations_summary.ipynb`                                                                                                       |
 | `Case_A_WR_evolution_Zsun_045Zsun_01Zsun`, `Case_B_WR_evolution_Zsun_045Zsun_01Zsun` | `Case_A_SMT_example_models.ipynb`, `Case_B_SMT_example_models.ipynb` (need the POSYDON v2 HMS-HMS grids in `PATH_TO_POSYDON_DATA`) |
 
-`binary_fraction.ipynb` and `stripped_stars.ipynb` only print/explore and save no figures.
+`binary_fraction.ipynb` only prints numbers and saves no figures.
 
 ## WR classification rulebook
 
