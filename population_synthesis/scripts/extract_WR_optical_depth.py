@@ -1,25 +1,19 @@
 '''
-This notebooks extracts the WR phases from the posydon population runs and
+This script extracts the WR phases from the posydon population runs and
 stores it in a pickle file for the analysis notebooks.
 '''
 
-from posydon.utils.common_functions import convert_metallicity_to_string
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-from pathlib import Path
-from posydon.config import PATH_TO_POSYDON
-from tqdm import tqdm
 from posydon.popsyn.synthetic_population import TransientPopulation
+import numpy as np
 import pickle
-from optical_depth import optical_depth_calculation
+from tqdm import tqdm
 
-data_folder = Path('/Users/max/Documents/projects/WR_population/population_synthesis/runs/2026_08_14/')
-
-output_folder = Path('/Users/max/Documents/projects/WR_population/data/optical_depth/')
+from wr_population.paths import METALLICITIES, OPTICAL_DEPTH_DIR, population_file, WR_phases_file
+from wr_population.optical_depth import optical_depth_calculation
+from wr_population.stellar import calc_Teff
 
 # metallicities to process
-metallicities = [0.01, 0.1, 0.2, 0.45, 1]
+metallicities = METALLICITIES
 
 def get_WR_phases(history, model_weights, metallicity):
     '''Get the WR phases for both stars in the binary history.'''
@@ -41,25 +35,6 @@ def get_WR_phases(history, model_weights, metallicity):
             S2_WR_data[i] = out
     return S1_WR_data, S2_WR_data
 
-def calc_Teff(L, R):
-    """Calculate the effective temperature.
-    
-    L : pd.Series
-        Logarithmic luminosity in L_sun
-    R : pd.Series
-        Logarithmic radius in R_sun
-    Returns
-    -------
-    Teff : np.array
-        Logarithmic effective temperature in K
-    """
-    L_vals = 10**L.values * 3.828e26  # L_sun to Watts
-    R_vals = 10**R.values * 6.957e8   # R_sun to meters
-    sigma = 5.67037442e-8
-    Teff_vals = (L_vals / (4 * np.pi * R_vals**2 * sigma))**0.25
-    
-    return np.log10(Teff_vals)
-    
 def set_star_parameters( which_star):
     """Set the column names and final event based on requested star."""
     if which_star not in ['S1', 'S2']:
@@ -80,7 +55,7 @@ def filter_WR_phases(binary, weight, which_star):
     
     surface_h_column, surface_he_column, mass_column, radius_column, log_L_column, mdot_column, final_event = set_star_parameters(which_star)
     
-    Teff_column = calc_Teff(binary[log_L_column], binary[radius_column])
+    Teff_column = calc_Teff(binary[log_L_column].values, binary[radius_column].values)
     
     delta_t = binary['time'].diff().fillna(0)
     
@@ -111,10 +86,7 @@ def filter_WR_phases(binary, weight, which_star):
 for metallicity in metallicities:
     print(f"Processing metallicity Z={metallicity} Zsun")
 
-    met_str = convert_metallicity_to_string(metallicity)
-    metallicity_file = data_folder / f"{met_str}_Zsun_population.h5"
-
-    pop = TransientPopulation(str(metallicity_file), 'all')
+    pop = TransientPopulation(str(population_file(metallicity)), 'all')
     model_weights = pop.model_weights('extended_IMF')
     
     # extract relevant columns
@@ -128,7 +100,8 @@ for metallicity in metallicities:
                                            model_weights,
                                            metallicity)
     
-    with open(output_folder / f'WR_phases_Z{met_str}_Zsun.pkl', 'wb') as f:
+    OPTICAL_DEPTH_DIR.mkdir(parents=True, exist_ok=True)
+    with open(WR_phases_file(metallicity), 'wb') as f:
         pickle.dump({'S1_WR_data': S1_WR_data, 'S2_WR_data': S2_WR_data}, f)
     print(f"Saved WR phases for Z={metallicity} Zsun")
     

@@ -1,0 +1,28 @@
+# Environment for the WR population analysis.
+#
+#   conda env create -p ./env -f environment.yml
+#   ./env/bin/python -m pip install -e <path to POSYDON checkout>
+#   ./env/bin/python -m pip install --no-deps -e .
+#
+# POSYDON: the analysis used commit 0c5fc9117 (branch enhancement/rapid-maltsev-fixes).
+name: wr_population
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11.9
+  - numpy=1.26.4
+  - pandas=2.2.2
+  - scipy=1.14.0
+  - matplotlib=3.9.2
+  - h5py=3.11.0
+  - pytables=3.9.2
+  - tqdm=4.66.4
+  - ipython=8.25.0
+  - ipykernel=6.29.4
+  - nbconvert=7.16.4
+  - nbformat
+  - pip
+  - pip:
+      - cmap==0.7.2
+variables:
+  PYTHONNOUSERSITE: "1"

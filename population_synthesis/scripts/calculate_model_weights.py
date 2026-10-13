@@ -1,9 +1,7 @@
 from posydon.popsyn.synthetic_population import Population, TransientPopulation
-from posydon.utils.common_functions import convert_metallicity_to_string
-from pathlib import Path
-import numpy as np
 import pandas as pd
-import h5py
+
+from wr_population.paths import METALLICITIES, population_file
 
 def trans_func(hist_chunk, oneline_chunk, form_chunk):
     
@@ -14,16 +12,14 @@ def trans_func(hist_chunk, oneline_chunk, form_chunk):
     
 
 
-metallicities = [0.01, 0.1, 0.2, 0.45, 1]
-data_folder = Path('/Users/max/Documents/projects/WR_population/population_synthesis/runs/2026_08_14/')
+metallicities = METALLICITIES
 
 
 for metallicity in metallicities:
     print(f"Processing metallicity Z={metallicity} Zsun")
 
     # open file
-    met_str = convert_metallicity_to_string(metallicity)
-    metallicity_file = data_folder / f"{met_str}_Zsun_population.h5"
+    metallicity_file = population_file(metallicity)
     pop = Population(str(metallicity_file))
     # I want to calculate the model_weight for each binary in the population.
     # check if transient population already exists, if not create it
