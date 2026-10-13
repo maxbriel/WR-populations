@@ -1,10 +1,11 @@
 # Environment for the WR population analysis.
 #
+#   git clone --branch v2.2.8 https://github.com/POSYDON-code/POSYDON.git <path to POSYDON checkout>
 #   conda env create -p ./env -f environment.yml
 #   ./env/bin/python -m pip install -e <path to POSYDON checkout>
 #   ./env/bin/python -m pip install --no-deps -e .
 #
-# POSYDON: the analysis used commit 0c5fc9117 (branch enhancement/rapid-maltsev-fixes).
+# POSYDON: v2.2.8, the version used for the population run (runs/2026_08_14).
 name: wr_population
 channels:
   - conda-forge

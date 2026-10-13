@@ -5,9 +5,10 @@ Population-synthesis study of Wolf-Rayet (WR) stars formed through binary evolut
 ## Setup
 
 ```bash
+git clone --branch v2.2.8 https://github.com/POSYDON-code/POSYDON.git <POSYDON checkout>   # version used for the population run
 conda env create -p ./env -f environment.yml          # git-ignored env in the repo
 conda env config vars set -p ./env PATH_TO_POSYDON=<POSYDON checkout> PATH_TO_POSYDON_DATA=<POSYDON data>
-./env/bin/python -m pip install -e <POSYDON checkout>   # commit 0c5fc9117, see environment.yml
+./env/bin/python -m pip install -e <POSYDON checkout>
 ./env/bin/python -m pip install --no-deps -e .          # the wr_population package
 ./env/bin/python -m ipykernel install --user --name wr_population --display-name "Python (wr_population)"
 ```
