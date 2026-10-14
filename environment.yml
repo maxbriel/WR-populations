@@ -1,7 +1,9 @@
 # Environment for the WR population analysis.
 #
 #   conda env create -p ./env -f environment.yml
-#   ./env/bin/python -m pip install --no-deps -e .
+#   conda activate ./env
+#   pip install --no-deps -e .
+# (see the README for setting PATH_TO_POSYDON and PATH_TO_POSYDON_DATA)
 #
 # POSYDON: v2.2.8, the version used for the population run (runs/2026_08_14).
 name: wr_population
