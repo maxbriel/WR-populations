@@ -47,9 +47,24 @@ The large data files in `data/` and `population_synthesis/` are available on Zen
 - WNL: $0.05 < X_\mathrm{H} \leq 0.5$, not H-burning.
 - WNE: $X_\mathrm{H} \leq 0.05$, $X_\mathrm{He} \geq 0.7$.
 - WC: $X_\mathrm{H} \leq 0.05$, $X_\mathrm{He} < 0.7$.
-- Binary mask: state in {detached, RLO1, RLO2, contact}.
+- Binary mask: `state` in {`detached`, `RLO1`, `RLO2`, `contact`}.
 - Formation channel: S1 from `interp_class_HMS_HMS` (`stable_MT`, `unstable_MT`, `stable_reverse_MT`, `no_MT`/NaN → No MT); S2 from `interp_class_CO_HMS_RLO` (`stable_MT`, `unstable_MT`, `no_MT`/NaN → No MT).
-- Number of WR stars $\propto \sum \Delta t \times w_\mathrm{model}$, with $w_\mathrm{model}$ the `model_weight`.
+
+### Weighting
+
+Each binary $i$ gets a model weight $w_i$ (the `model_weight`, POSYDON's `extended_IMF` weights from `calculate_model_weights.py`). It converts the sampled initial distributions to the target ones (see [Initial distributions](#initial-distributions)) and normalises to the stellar mass formed:
+
+$$
+w_i = \frac{p_\mathrm{target}(M_{1,i}, q_i, P_i)}{p_\mathrm{sampled}(M_{1,i}, q_i, P_i)} \times \frac{1}{M_\mathrm{sim}} \frac{\langle M \rangle_\mathrm{sampled}}{\langle M \rangle_\mathrm{target}},
+$$
+
+where $p$ are the joint PDFs of primary mass, mass ratio and orbital period, $M_\mathrm{sim}$ is the total stellar mass of the simulated population, and $\langle M \rangle$ is the mean mass per system of each distribution. $w_i$ is thus the number of such binaries per $\mathrm{M_\odot}$ of star formation.
+
+Each history step $j$ of binary $i$ that passes the WR selection contributes its duration $\Delta t_{ij}$ (the `weight` column), so the number of WR stars is
+
+$$
+N_\mathrm{WR} \propto \sum_{i} \sum_{j \in \mathrm{WR}} \Delta t_{ij}\, w_i .
+$$
 
 ## Initial distributions
 
