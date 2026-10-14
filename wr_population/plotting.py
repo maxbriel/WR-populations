@@ -7,8 +7,8 @@ import numpy as np
 def use_posydon_style():
     """Apply the POSYDON matplotlib style (LaTeX fonts) used for the paper figures."""
     import matplotlib.pyplot as plt
-    from posydon.config import PATH_TO_POSYDON
-    plt.style.use(str(Path(PATH_TO_POSYDON) / 'posydon' / 'visualization' / 'posydon.mplstyle'))
+    import posydon
+    plt.style.use(str(Path(posydon.__file__).parent / 'visualization' / 'posydon.mplstyle'))
 
 # colours per metallicity (in units of Zsun)
 METALLICITY_COLOURS = {0.0001: '#1f4e79',

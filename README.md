@@ -1,42 +1,29 @@
 # WR Population
 
-Population-synthesis study of Wolf-Rayet (WR) stars formed through binary evolution, using POSYDON. All runs cover 5 metallicities: 0.01, 0.1, 0.2, 0.45, 1.0 Zsun.
+These are the notebooks used to generate the figures in this paper: https://ui.adsabs.harvard.edu/abs/2026arXiv260905398B/abstract
 
 ## Setup
 
+You need to install POSYDON v2.2.8, the version used for the population synthesis. `environment.yml` installs it from the `posydon` conda channel together with the other dependencies.
+
 ```bash
-git clone --branch v2.2.8 https://github.com/POSYDON-code/POSYDON.git <POSYDON checkout>   # version used for the population run
-conda env create -p ./env -f environment.yml          # git-ignored env in the repo
-conda env config vars set -p ./env PATH_TO_POSYDON=<POSYDON checkout> PATH_TO_POSYDON_DATA=<POSYDON data>
-./env/bin/python -m pip install -e <POSYDON checkout>
+conda env create -p ./env -f environment.yml          # POSYDON v2.2.8 + dependencies; git-ignored env in the repo
+conda env config vars set -p ./env PATH_TO_POSYDON=<POSYDON working directory> PATH_TO_POSYDON_DATA=<POSYDON data>
 ./env/bin/python -m pip install --no-deps -e .          # the wr_population package
 ./env/bin/python -m ipykernel install --user --name wr_population --display-name "Python (wr_population)"
 ```
 
 All notebooks use the `wr_population` kernel and import from the `wr_population` package, so they run from any folder.
 
-## Directory map
+## Directory structure
 
-- `wr_population/` — shared code (installed with `pip install -e .`)
-  - `paths.py` — data/run/figure locations relative to the repo, `METALLICITIES`, `population_file()`, `WR_phases_file()`
-  - `io.py` — `load_metallicity` (WR-phase pickles → arrays), `load_interaction_classes`, observed catalogues (`load_galactic_observations`, `load_LMC_observations`, `load_SMC_observations`, `*_periods`)
-  - `classification.py` — `classify_WR` (WNL/WNE/WC), `make_binary_mask`, `formation_channels` / `formation_channel_masks`, `CHANNEL_COLOURS`
-  - `optical_depth.py` — optical-depth machinery (Langer 1989): τ, v_esc, v_inf, Γ_Edd
-  - `stellar.py` — `calc_Teff`, Tout et al. (1996) ZAMS
-  - `plotting.py` — `use_posydon_style` (paper figure style), `plot_period_histogram`, `METALLICITY_COLOURS`
+- `wr_population/` — shared Python code used by the notebooks and scripts
+- `population_synthesis/` — POSYDON population run config (`WR_run.ini`), its output, and the post-processing scripts
+- `data/` — extracted WR phases from the population run and the observed WR catalogues
+- `figure_scripts/` — notebooks that make the paper figures
+- `HPC_high_detail_grids/` — Case A/B example figures from the high-resolution POSYDON grids
 
-- `population_synthesis/runs/2026_08_14/` — POSYDON popsynth run, read by all figure notebooks
-  - `WR_run.ini` — POSYDON population config (300,000 binaries per metallicity, log-normal kicks)
-  - Output: `*_Zsun_population.h5` (~5.2–5.6 GB each; git-ignored), with `extended_IMF` model weights stored inside
-- `population_synthesis/scripts/` — post-processing of the runs
-  - `calculate_model_weights.py` — computes `extended_IMF` model weights and stores them in the `.h5` files
-  - `extract_WR_optical_depth.py` — extraction: keeps H-poor phases (X_H ≤ 0.7) per binary, computes optical depth, saves pickles
-- `data/`
-  - `optical_depth/` — (from run `2026_08_14`), read by all paper figure notebooks
-  - `observations/` — Galactic (`Galactic_WRs.json`), LMC (`LMC_WRs.csv`), SMC (`SMC_WRs.data`) WR catalogues
-- `figure_scripts/` — paper figure notebooks
-  - `extra_figures/` — proposal/presentation figures; not part of the paper
-- `HPC_high_detail_grids/` — Case A/B "partial stripping" figures from high-res POSYDON grids (needs access to the internal grids on `/srv/astro`)
+The large data files in `data/` and `population_synthesis/` are not in git; they are available on Zenodo.
 
 ## Pipeline to reproduce
 
