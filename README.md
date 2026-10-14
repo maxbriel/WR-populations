@@ -60,11 +60,13 @@ $$
 
 where $p$ are the joint PDFs of primary mass, mass ratio and orbital period, $M_\mathrm{sim}$ is the total stellar mass of the simulated population, and $\langle M \rangle$ is the mean mass per system of each distribution. $w_i$ is thus the number of such binaries per $\mathrm{M_\odot}$ of star formation.
 
-Each history step $j$ of binary $i$ that passes the WR selection contributes its duration $\Delta t_{ij}$ (the `weight` column), so the number of WR stars is
+Each history step $j$ of binary $i$ that passes the WR selection contributes its duration $\Delta t_{ij}$ (the `weight` column). For a constant star-formation rate (SFR), the number of WR stars is
 
 $$
-N_\mathrm{WR} \propto \sum_{i} \sum_{j \in \mathrm{WR}} \Delta t_{ij}\, w_i .
+\frac{N_\mathrm{WR}}{\mathrm{SFR}} = \sum_{i} \sum_{j \in \mathrm{WR}} \Delta t_{ij}\, w_i ,
 $$
+
+i.e. the summed WR lifetime per $\mathrm{M_\odot}$ formed, in units of $\mathrm{yr\,M_\odot^{-1}}$ (number of WR stars per $\mathrm{M_\odot\,yr^{-1}}$ of star formation).
 
 ## Initial distributions
 
